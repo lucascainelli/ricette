@@ -476,6 +476,7 @@ function saveMetaToFirestore(){
     db.collection('users').doc(currentUser.uid).collection('ricette').doc('data').set({
       ricette: cloudRicette,
       collections: collections,
+      inboxDone: inboxDone,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     }).then(function(){
       setSyncStatus('ok','Sincronizzato');
@@ -497,6 +498,7 @@ function loadFromFirestore(){
       if(doc.exists){
         var data=doc.data();
         collections=data.collections||[];
+        inboxDone=data.inboxDone||[];
         var localById={};
         (localSnap.ricette||[]).forEach(function(r){localById[r.id]=r;});
         ricette=(data.ricette||[]).map(function(r){
@@ -508,12 +510,40 @@ function loadFromFirestore(){
         saveLocal();
         setSyncStatus('ok','Sincronizzato');
         renderMain();
+        importInbox();
       } else {
         setSyncStatus('ok','Nuovo archivio');
+        importInbox();
       }
     },function(e){
       setSyncStatus('offline','Errore: '+(e.code||e.message));
     });
+}
+
+// ── INBOX ── ricette aggiunte dal repo (inbox.json): importate una sola volta nell'archivio dell'utente.
+var inboxDone=[], _inboxChecked=false;
+function importInbox(){
+  if(_inboxChecked||!currentUser) return;
+  _inboxChecked=true;
+  fetch('inbox.json?v='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():[];}).then(function(items){
+    if(!Array.isArray(items)) return;
+    var added=0;
+    items.forEach(function(it){
+      if(!it||!it.id||!it.name) return;
+      if(inboxDone.indexOf(it.id)>=0) return;
+      inboxDone.push(it.id);
+      if(ricette.some(function(r){return r.id===it.id;})) return;
+      var col=it.collezione?collections.find(function(c){return (c.name||'').toLowerCase()===String(it.collezione).toLowerCase();}):null;
+      ricette.unshift({
+        id:it.id,name:it.name,porzioni:it.porzioni||4,colId:col?col.id:null,
+        ingredienti:it.ingredienti||'',preparazione:it.preparazione||'',note:it.note||'',
+        tags:(it.tags||[]).map(function(t){return String(t).toLowerCase();}),
+        fotoUrl:null,fotoB64:null,date:it.date||today()
+      });
+      added++;
+    });
+    if(added){save();renderMain();}
+  }).catch(function(){});
 }
 
 // ── STATE ──
