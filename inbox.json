@@ -16,5 +16,14 @@
    "bocuse",
    "classici"
   ]
+ },
+ {
+  "id": "inbox-20261111-fonte-petti-pollo-piselli",
+  "patch": [
+   "petti",
+   "pollo",
+   "piselli"
+  ],
+  "appendNote": "Fonte: Ada Boni, Il talismano della felicità."
  }
 ]

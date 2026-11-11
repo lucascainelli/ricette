@@ -533,8 +533,21 @@ function importInbox(){
     if(!Array.isArray(items)) return;
     var added=0;
     items.forEach(function(it){
-      if(!it||!it.id||!it.name) return;
+      if(!it||!it.id) return;
       if(inboxDone.indexOf(it.id)>=0) return;
+      if(it.patch){
+        // Modifica a ricette esistenti: tutte le parole di it.patch devono comparire nel nome.
+        var words=it.patch.map(function(w){return String(w).toLowerCase();});
+        var hits=ricette.filter(function(r){var n=(r.name||'').toLowerCase();return words.every(function(w){return n.indexOf(w)>=0;});});
+        if(!hits.length) return; // riprova al prossimo avvio
+        inboxDone.push(it.id);
+        hits.forEach(function(r){
+          if(it.appendNote&&(r.note||'').indexOf(it.appendNote)<0){r.note=((r.note||'').trim()+'\n'+it.appendNote).trim();}
+        });
+        added++;
+        return;
+      }
+      if(!it.name) return;
       inboxDone.push(it.id);
       if(ricette.some(function(r){return r.id===it.id;})) return;
       var col=it.collezione?collections.find(function(c){return (c.name||'').toLowerCase()===String(it.collezione).toLowerCase();}):null;
