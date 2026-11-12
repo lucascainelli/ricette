@@ -43,5 +43,24 @@
    "bocuse",
    "classici"
   ]
+ },
+ {
+  "id": "inbox-20261112-sarde-alla-napoletana",
+  "name": "Sarde alla napoletana",
+  "porzioni": 4,
+  "collezione": "Secondi",
+  "date": "2026-11-12",
+  "ingredienti": "600g sarde\n100ml olio d'oliva\n2 spicchi d'aglio\n3 pomodori maturi\n1 manciata di prezzemolo\norigano q.b.\nsale q.b.\npepe q.b.",
+  "preparazione": "1) Tagliare la testa alle sarde, pulirle bene, lavarle e asciugarle con cura.\n2) Versare mezzo bicchiere di olio in una pirofila e sistemarvi le sarde, accostandole una all'altra. Insaporirle con sale, pepe e un pizzico di origano.\n3) Svuotare i pomodori e farne dei filetti. Disporli qua e là accanto ai pesci.\n4) Cospargere con prezzemolo e aglio tritati e irrorare con un filo di olio d'oliva.\n5) Mettere la pirofila in forno già molto caldo (200°C) per circa 20 minuti.\n6) Servire calde o fredde.",
+  "note": "Pesce azzurro, preparazione rapida da forno: ottime sia calde che fredde.\n\"Mezzo bicchiere\" di olio reso come 100ml per lo scaling; il libro non dà la quantità nell'elenco. Nel testo manca un pezzo di riga dopo \"Svuotare i pomodori\".\nFonte: ricetta n. 1598 (libro da indicare).",
+  "tags": [
+   "sarde",
+   "pesce azzurro",
+   "pesce",
+   "forno",
+   "napoletana",
+   "campania",
+   "secondi"
+  ]
  }
 ]
