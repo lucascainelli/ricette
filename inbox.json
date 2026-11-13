@@ -79,5 +79,20 @@
    "parmigiano",
    "burro"
   ]
+ },
+ {
+  "id": "inbox-20261113-ragu",
+  "name": "Ragù",
+  "collezione": "Salse e sughi",
+  "date": "2026-11-13",
+  "ingredienti": "1000g carne macinata\n1 cipolla\naglio q.b.\n150ml vino\n400g pomodori a pezzi\norigano q.b.\nbasilico q.b.\nsale q.b.",
+  "preparazione": "1) Soffriggere cipolla e aglio tritati in poco olio.\n2) Aggiungere la carne e rosolarla bene, sgranandola.\n3) Sfumare con il vino e lasciarlo evaporare.\n4) Unire i pomodori, l'origano e il sale; cuocere a fuoco basso, a coperchio socchiuso, per almeno 1 ora e mezza.\n5) A fine cottura aggiungere il basilico.",
+  "note": "Porzioni non indicate negli appunti (impostate a 4 di default).\n\"1 scatola\" resa come 400g e \"1 bicchiere\" come 150ml per lo scaling; tipo di carne non indicato. Il procedimento non è negli appunti: è quello classico.\nFonte: appunti di Luca.",
+  "tags": [
+   "ragù",
+   "sugo",
+   "carne",
+   "primo"
+  ]
  }
 ]
