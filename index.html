@@ -73,6 +73,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .colbtn-fav .colbtn-icon{display:flex;color:#D97706}.colbtn-fav .colbtn-icon .isvg{width:30px;height:30px;fill:currentColor}
 .colbtn-fav .colbtn-name{color:#92400E}
 .favon{color:#D97706!important}.favon .isvg{fill:currentColor}
+.grp-title{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin:4px 0 8px}
+.grpchip{background:var(--surface);border:1.5px solid var(--border);border-radius:100px;padding:4px 11px;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;transition:.12s}
+.grpchip em{font-style:normal;font-weight:700;color:var(--text3);margin-left:5px;font-size:10px}
+.grpchip:hover{background:var(--accent);border-color:var(--accent);color:#fff}.grpchip:hover em{color:#fff}
 .colbtn-all{background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-color:#FDE68A}
 .colbtn-all .colbtn-name{color:#92400E}
 .colbtn-all .colbtn-count{background:rgba(0,0,0,.08);color:#92400E}
@@ -367,6 +371,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <div class="tag-suggest" id="rTagSuggest"></div>
         </div>
       </div>
+
+      <div class="field">
+        <label>Autore / fonte</label>
+        <input id="rFonte" list="dlFonti" placeholder="Es. Pellegrino Artusi" autocomplete="off">
+        <datalist id="dlFonti"></datalist>
+      </div>
+      <div class="field">
+        <label>Territorio</label>
+        <input id="rTerr" list="dlTerr" placeholder="Es. Campania" autocomplete="off">
+        <datalist id="dlTerr"></datalist>
+      </div>
     </div>
     <div class="mfoot">
       <button class="btn ghost" onclick="closeM('mRicetta')">Annulla</button>
@@ -479,6 +494,8 @@ function saveMetaToFirestore(){
         note:r.note||'',
         tags:r.tags||[],
         fav:!!r.fav,
+        fonte:r.fonte||'',
+        territorio:r.territorio||'',
         date:r.date||null,
         fotoUrl:(r.fotoUrl&&!r.fotoUrl.startsWith('data:'))?r.fotoUrl:null
       };
@@ -519,6 +536,7 @@ function loadFromFirestore(){
         });
         var _fixed=false;
         ricette.forEach(function(r){var n=normTags(r.tags);if(JSON.stringify(n)!==JSON.stringify(r.tags||[])){r.tags=n;_fixed=true;}});
+        if(migrateGroups()) _fixed=true;
         saveLocal();
         setSyncStatus('ok','Sincronizzato');
         renderMain();
@@ -568,13 +586,14 @@ function importInbox(){
       });
       added++;
     });
+    if(migrateGroups()) added++;
     if(added){save();renderMain();}
   }).catch(function(){});
 }
 
 // ── STATE ──
 var ricette=[], collections=[];
-var activeCol=null, activeTag=null;
+var activeCol=null, activeTag=null, activeGrp=null;
 var editingColId=null;
 var ricTags=[], ricFotoData=null, ricFotoFile=null, ricEditId=null;
 var _viewId=null;
@@ -729,7 +748,7 @@ function renderMain(){
   var h='';
 
   // ── HOME: chessboard of categories ──
-  if(activeCol===null && activeTag===null){
+  if(activeCol===null && activeTag===null && activeGrp===null){
     h+='<div class="colboard">';
     // "Tutte" button
     h+='<div class="colbtn colbtn-all" onclick="setColAll()">';
@@ -751,6 +770,13 @@ function renderMain(){
       h+='</div>';
     });
     h+='</div>';
+    [['fonte','Autori e fonti'],['territorio','Territori']].forEach(function(g){
+      var items=groupCounts(g[0]);
+      if(!items.length) return;
+      h+='<div class="grp-title">'+g[1]+'</div><div class="tagcloud">';
+      items.forEach(function(e){h+='<span class="grpchip" data-k="'+g[0]+'" data-v="'+esc(e[0])+'" onclick="setGrp(this.dataset.k,this.dataset.v)">'+esc(e[0])+'<em>'+e[1]+'</em></span>';});
+      h+='</div>';
+    });
     // Tag cloud below if tags exist
     var tags=allTags();
     if(tags.length){
@@ -768,6 +794,7 @@ function renderMain(){
   var filtered=ricette.filter(function(r){
     if(activeCol==='__all__') return true;
     if(activeCol==='__fav__') return !!r.fav;
+    if(activeGrp && (r[activeGrp.k]||'').trim()!==activeGrp.v) return false;
     if(activeCol && r.colId!==activeCol) return false;
     if(activeTag && !(r.tags||[]).includes(activeTag)) return false;
     return true;
@@ -794,6 +821,12 @@ function renderMain(){
     h+='<button class="btn ghost sm" onclick="setCol(null)">'+ic('back','sm')+' Indietro</button>';
     h+='<span class="col-backbar-icon">🍽️</span>';
     h+='<span class="col-backbar-name">Tutte le ricette</span>';
+    h+='<span class="col-backbar-count">'+filtered.length+' ricette</span>';
+    h+='</div>';
+  } else if(activeGrp){
+    h+='<div class="col-backbar">';
+    h+='<button class="btn ghost sm" onclick="setCol(null)">'+ic('back','sm')+' Indietro</button>';
+    h+='<span class="col-backbar-name">'+esc(activeGrp.v)+'</span>';
     h+='<span class="col-backbar-count">'+filtered.length+' ricette</span>';
     h+='</div>';
   } else if(activeTag){
@@ -842,8 +875,35 @@ function renderCard(r){
 function show(id,h){var el=document.getElementById(id);if(h!==undefined)el.innerHTML=h;el.style.display='';}
 function hide(id){document.getElementById(id).style.display='none';}
 
-function setCol(id){activeCol=id;activeTag=null;renderMain();}
-function setColFav(){activeCol='__fav__';activeTag=null;renderMain();}
+function setCol(id){activeCol=id;activeTag=null;activeGrp=null;renderMain();}
+function setGrp(k,v){activeGrp={k:k,v:v};activeCol=null;activeTag=null;renderMain();}
+function groupCounts(k){
+  var m={};ricette.forEach(function(r){var v=(r[k]||'').trim();if(v)m[v]=(m[v]||0)+1;});
+  return Object.keys(m).sort(function(a,b){return a.localeCompare(b,'it');}).map(function(v){return [v,m[v]];});
+}
+function fillGroupLists(){
+  [['dlFonti','fonte'],['dlTerr','territorio']].forEach(function(x){
+    var dl=document.getElementById(x[0]);if(dl)dl.innerHTML=groupCounts(x[1]).map(function(e){return '<option value="'+esc(e[0])+'">';}).join('');
+  });
+}
+var KNOWN_REG=['abruzzo','basilicata','calabria','campania','emilia-romagna','friuli-venezia giulia','lazio','liguria','lombardia','marche','molise','piemonte','puglia','sardegna','sicilia','toscana','trentino-alto adige','umbria','valle d\'aosta','veneto'];
+var KNOWN_AUT={'artusi':'Pellegrino Artusi','anna gosetti':'Anna Gosetti della Salda','bocuse':'Paul Bocuse'};
+function migrateGroups(){
+  var ch=false;
+  ricette.forEach(function(r){
+    if(r.fonte!==undefined&&r.territorio!==undefined) return;
+    var tags=(r.tags||[]).slice(), fonte=r.fonte||'', terr=r.territorio||'';
+    tags=tags.filter(function(t){
+      if(!terr&&KNOWN_REG.indexOf(t)>=0){terr=t.replace(/(^|[ -])([a-z])/g,function(m,a,b){return a+b.toUpperCase();});return false;}
+      if(!fonte&&KNOWN_AUT[t]){fonte=KNOWN_AUT[t];return false;}
+      return true;
+    });
+    if(!fonte){var m=(r.note||'').match(/Fonte:\s*((?:[A-ZÀ-Ý][\wÀ-ÿ'’.-]*\s?){2,4}),/);if(m) fonte=m[1].trim();}
+    r.tags=tags;r.fonte=fonte;r.territorio=terr;ch=true;
+  });
+  return ch;
+}
+function setColFav(){activeCol='__fav__';activeTag=null;activeGrp=null;renderMain();}
 function toggleFav(id){
   var r=getRicetta(id||_viewId);if(!r)return;
   r.fav=!r.fav;save();updateFavBtn();renderMain();
@@ -852,8 +912,8 @@ function updateFavBtn(){
   var b=document.getElementById('rvFavBtn'),r=getRicetta(_viewId);
   if(b&&r){b.classList.toggle('favon',!!r.fav);b.title=r.fav?'Togli dai preferiti':'Aggiungi ai preferiti';}
 }
-function setColAll(){activeCol='__all__';activeTag=null;renderMain();}
-function setTag(t){activeTag=t?((activeTag===t)?null:t):null;activeCol=null;renderMain();}
+function setColAll(){activeCol='__all__';activeTag=null;activeGrp=null;renderMain();}
+function setTag(t){activeTag=t?((activeTag===t)?null:t):null;activeCol=null;activeGrp=null;renderMain();}
 
 // ── SEARCH ──
 function doSearch(q){
@@ -958,6 +1018,10 @@ function renderViewerBody(){
     h+='<div class="rv-section-label">Note</div>';
     h+='<div class="rv-note">'+esc(r.note)+'</div>';
     h+='</div>';
+  }
+
+  if(r.fonte||r.territorio){
+    h+='<div class="rv-section"><div class="rv-note">'+(r.fonte?'<b>Fonte:</b> '+esc(r.fonte):'')+(r.fonte&&r.territorio?' &nbsp;·&nbsp; ':'')+(r.territorio?'<b>Territorio:</b> '+esc(r.territorio):'')+'</div></div>';
   }
 
   // Tags
@@ -1088,13 +1152,14 @@ function openNewRicettaM(){
   document.getElementById('rIngredienti').value='';
   document.getElementById('rPreparazione').value='';
   document.getElementById('rNote').value='';
+  document.getElementById('rFonte').value='';document.getElementById('rTerr').value='';fillGroupLists();
   document.getElementById('rFotoFile').value='';
   document.getElementById('rFotoThumb').style.display='none';
   document.getElementById('rFotoImg').src='';
   document.getElementById('rFotoSt').textContent='';
   document.getElementById('ricDelBtn').style.display='none';
   document.getElementById('rSaveBtn').textContent='Salva';
-  populateColSel((activeCol&&activeCol!=='__all__')?activeCol:'');
+  populateColSel((activeCol&&activeCol!=='__all__'&&activeCol!=='__fav__')?activeCol:'');
   renderRicTagPills();
   openM('mRicetta');
   setTimeout(function(){document.getElementById('rNome').focus();},80);
@@ -1111,6 +1176,7 @@ function openEditRicettaM(id){
   document.getElementById('rIngredienti').value=r.ingredienti||'';
   document.getElementById('rPreparazione').value=r.preparazione||'';
   document.getElementById('rNote').value=r.note||'';
+  document.getElementById('rFonte').value=r.fonte||'';document.getElementById('rTerr').value=r.territorio||'';fillGroupLists();
   document.getElementById('rFotoFile').value='';
   document.getElementById('rFotoSt').textContent='';
   document.getElementById('ricDelBtn').style.display='';
@@ -1163,6 +1229,8 @@ async function saveRicetta(){
       note:document.getElementById('rNote').value.trim(),
       tags:ricTags.slice(),
       fav:ricEditId?!!(getRicetta(ricEditId)||{}).fav:false,
+      fonte:document.getElementById('rFonte').value.trim(),
+      territorio:document.getElementById('rTerr').value.trim(),
       fotoUrl:fotoUrl,fotoB64:fotoB64,
       date:today()
     };
