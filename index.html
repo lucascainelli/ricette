@@ -69,6 +69,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .colbtn-icon{font-size:30px;line-height:1}
 .colbtn-name{font-size:12px;font-weight:800;color:var(--text);line-height:1.2}
 .colbtn-count{font-size:10px;font-weight:700;background:rgba(0,0,0,.06);border-radius:10px;padding:2px 7px;color:var(--text2)}
+.colbtn-fav{background:linear-gradient(135deg,#FFFBEB,#FDE68A);border-color:#FCD34D}
+.colbtn-fav .colbtn-icon{display:flex;color:#D97706}.colbtn-fav .colbtn-icon .isvg{width:30px;height:30px;fill:currentColor}
+.colbtn-fav .colbtn-name{color:#92400E}
+.favon{color:#D97706!important}.favon .isvg{fill:currentColor}
 .colbtn-all{background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-color:#FDE68A}
 .colbtn-all .colbtn-name{color:#92400E}
 .colbtn-all .colbtn-count{background:rgba(0,0,0,.08);color:#92400E}
@@ -282,6 +286,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <div class="rv-topbar">
     <button class="btn ghost sm" onclick="closeViewer()"><svg class="isvg isz-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Indietro</button>
     <span class="rv-title" id="rvTitle">—</span>
+    <button class="ico" id="rvFavBtn" onclick="toggleFav(null)"><svg class="isvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
     <button class="ico" id="rvEditBtn" onclick="openEditRicettaM(null)"><svg class="isvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
   </div>
   <div class="rv-body" id="rvBody"></div>
@@ -473,6 +478,7 @@ function saveMetaToFirestore(){
         preparazione:r.preparazione||'',
         note:r.note||'',
         tags:r.tags||[],
+        fav:!!r.fav,
         date:r.date||null,
         fotoUrl:(r.fotoUrl&&!r.fotoUrl.startsWith('data:'))?r.fotoUrl:null
       };
@@ -511,10 +517,13 @@ function loadFromFirestore(){
             fotoB64:(!r.fotoUrl&&loc.fotoB64)?loc.fotoB64:null
           });
         });
+        var _fixed=false;
+        ricette.forEach(function(r){var n=normTags(r.tags);if(JSON.stringify(n)!==JSON.stringify(r.tags||[])){r.tags=n;_fixed=true;}});
         saveLocal();
         setSyncStatus('ok','Sincronizzato');
         renderMain();
         importInbox();
+        if(_fixed) saveMetaToFirestore();
       } else {
         setSyncStatus('ok','Nuovo archivio');
         importInbox();
@@ -554,7 +563,7 @@ function importInbox(){
       ricette.unshift({
         id:it.id,name:it.name,porzioni:it.porzioni||4,colId:col?col.id:null,
         ingredienti:it.ingredienti||'',preparazione:it.preparazione||'',note:it.note||'',
-        tags:(it.tags||[]).map(function(t){return String(t).toLowerCase();}),
+        tags:normTags(it.tags),
         fotoUrl:null,fotoB64:null,date:it.date||today()
       });
       added++;
@@ -587,6 +596,7 @@ var ICONS={
   camera:'<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z"/><circle cx="12" cy="13" r="4"/>',
   folder:'<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2Z"/>',
   users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  star:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
   tag:'<path d="M12.59 2H4a2 2 0 0 0-2 2v8.59a2 2 0 0 0 .59 1.41l9 9a2 2 0 0 0 2.82 0l8-8a2 2 0 0 0 0-2.82l-9-9A2 2 0 0 0 12.59 2Z"/><circle cx="7.3" cy="7.3" r="1.3"/>',
   upload:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>',
   save:'<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>',
@@ -694,6 +704,16 @@ document.querySelectorAll('.modal').forEach(function(m){
 });
 
 // ── HELPERS ──
+function normTags(arr){
+  var out=[];
+  (arr||[]).forEach(function(t){
+    String(t).split(/[,;]+/).forEach(function(p){
+      p=p.trim().replace(/^#/,'').toLowerCase();
+      if(p&&out.indexOf(p)<0) out.push(p);
+    });
+  });
+  return out;
+}
 function allTags(){
   var s={};ricette.forEach(function(r){(r.tags||[]).forEach(function(t){s[t]=1;});});
   return Object.keys(s).sort();
@@ -716,6 +736,11 @@ function renderMain(){
     h+='<span class="colbtn-icon">🍽️</span>';
     h+='<span class="colbtn-name">Tutte</span>';
     h+='<span class="colbtn-count">'+ricette.length+'</span>';
+    h+='</div>';
+    h+='<div class="colbtn colbtn-fav" onclick="setColFav()">';
+    h+='<span class="colbtn-icon">'+ic('star')+'</span>';
+    h+='<span class="colbtn-name">Preferite</span>';
+    h+='<span class="colbtn-count">'+ricette.filter(function(r){return r.fav;}).length+'</span>';
     h+='</div>';
     collections.forEach(function(c){
       var n=ricette.filter(function(r){return r.colId===c.id;}).length;
@@ -742,18 +767,26 @@ function renderMain(){
   // ── INSIDE A COLLECTION or TAG ──
   var filtered=ricette.filter(function(r){
     if(activeCol==='__all__') return true;
+    if(activeCol==='__fav__') return !!r.fav;
     if(activeCol && r.colId!==activeCol) return false;
     if(activeTag && !(r.tags||[]).includes(activeTag)) return false;
     return true;
   });
 
   // Back bar
-  if(activeCol&&activeCol!=='__all__'){
+  if(activeCol&&activeCol!=='__all__'&&activeCol!=='__fav__'){
     var col=getCol(activeCol);
     h+='<div class="col-backbar">';
     h+='<button class="btn ghost sm" onclick="setCol(null)">'+ic('back','sm')+' Indietro</button>';
     h+='<span class="col-backbar-icon">'+(col?esc(col.icon||'📂'):'📂')+'</span>';
     h+='<span class="col-backbar-name">'+(col?esc(col.name):'Collezione')+'</span>';
+    h+='<span class="col-backbar-count">'+filtered.length+' ricette</span>';
+    h+='</div>';
+  } else if(activeCol==='__fav__'){
+    h+='<div class="col-backbar">';
+    h+='<button class="btn ghost sm" onclick="setCol(null)">'+ic('back','sm')+' Indietro</button>';
+    h+='<span class="col-backbar-icon favon">'+ic('star','lg')+'</span>';
+    h+='<span class="col-backbar-name">Preferite</span>';
     h+='<span class="col-backbar-count">'+filtered.length+' ricette</span>';
     h+='</div>';
   } else if(activeCol==='__all__'){
@@ -774,7 +807,7 @@ function renderMain(){
 
   // Recipe grid
   if(!filtered.length){
-    h+='<div class="empty"><div class="ei">🍽️</div><div class="et">Nessuna ricetta ancora</div><div class="es">Clicca "+ Ricetta" per aggiungerne una</div></div>';
+    h+='<div class="empty"><div class="ei">🍽️</div><div class="et">Nessuna ricetta ancora</div><div class="es">'+(activeCol==='__fav__'?'Tocca la stella su una ricetta per aggiungerla ai preferiti':'Clicca "+ Ricetta" per aggiungerne una')+'</div></div>';
   } else {
     h+='<div class="rgrid">';
     filtered.forEach(function(r){h+=renderCard(r);});
@@ -799,6 +832,7 @@ function renderCard(r){
   if(tagBs) h+='<div class="rcard-tags">'+tagBs+'</div>';
   h+='</div>';
   h+='<div class="rcard-foot">';
+  h+='<button class="ico'+(r.fav?' favon':'')+'" title="Preferita" onclick="event.stopPropagation();toggleFav(\''+r.id+'\')">'+ic('star')+'</button>';
   h+='<button class="ico" title="Modifica" onclick="event.stopPropagation();openEditRicettaM(\''+r.id+'\')">'+ic('edit')+'</button>';
   h+='<button class="ico" title="Elimina" style="color:var(--red)" onclick="event.stopPropagation();deleteRicettaById(\''+r.id+'\')">'+ic('x')+'</button>';
   h+='</div>';
@@ -809,6 +843,15 @@ function show(id,h){var el=document.getElementById(id);if(h!==undefined)el.inner
 function hide(id){document.getElementById(id).style.display='none';}
 
 function setCol(id){activeCol=id;activeTag=null;renderMain();}
+function setColFav(){activeCol='__fav__';activeTag=null;renderMain();}
+function toggleFav(id){
+  var r=getRicetta(id||_viewId);if(!r)return;
+  r.fav=!r.fav;save();updateFavBtn();renderMain();
+}
+function updateFavBtn(){
+  var b=document.getElementById('rvFavBtn'),r=getRicetta(_viewId);
+  if(b&&r){b.classList.toggle('favon',!!r.fav);b.title=r.fav?'Togli dai preferiti':'Aggiungi ai preferiti';}
+}
 function setColAll(){activeCol='__all__';activeTag=null;renderMain();}
 function setTag(t){activeTag=t?((activeTag===t)?null:t):null;activeCol=null;renderMain();}
 
@@ -839,6 +882,7 @@ function viewRicetta(id){
   document.getElementById('rvTitle').textContent=r.name||'Ricetta';
   document.getElementById('ricViewer').classList.add('open');
   document.body.style.overflow='hidden';
+  updateFavBtn();
   renderViewerBody();
 }
 
@@ -946,8 +990,7 @@ function onRicTagKey(e){
   var inp=document.getElementById('rTagIn');
   if(e.key==='Enter'||e.key===','||e.key===' '){
     e.preventDefault();
-    var v=inp.value.trim().replace(/^#/,'').toLowerCase();
-    if(v&&!ricTags.includes(v)){ricTags.push(v);}
+    ricTags=normTags(ricTags.concat([inp.value]));
     inp.value='';renderRicTagPills();
   } else if(e.key==='Backspace'&&!inp.value&&ricTags.length){
     ricTags.pop();renderRicTagPills();
@@ -1092,8 +1135,7 @@ function openEditRicettaM(id){
 // ── SAVE ──
 async function saveRicetta(){
   var nome=document.getElementById('rNome').value.trim();if(!nome)return;
-  var pending=document.getElementById('rTagIn').value.trim().toLowerCase();
-  if(pending&&!ricTags.includes(pending)){ricTags.push(pending);document.getElementById('rTagIn').value='';}
+  ricTags=normTags(ricTags.concat([document.getElementById('rTagIn').value]));document.getElementById('rTagIn').value='';
   var btn=document.getElementById('rSaveBtn');btn.disabled=true;btn.textContent='Salvataggio…';
   try{
     var porzioni=parseInt(document.getElementById('rPorzioni').value)||4;
@@ -1120,6 +1162,7 @@ async function saveRicetta(){
       preparazione:document.getElementById('rPreparazione').value.trim(),
       note:document.getElementById('rNote').value.trim(),
       tags:ricTags.slice(),
+      fav:ricEditId?!!(getRicetta(ricEditId)||{}).fav:false,
       fotoUrl:fotoUrl,fotoB64:fotoB64,
       date:today()
     };
