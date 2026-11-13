@@ -62,5 +62,22 @@
    "campania",
    "secondi"
   ]
+ },
+ {
+  "id": "inbox-20261113-risotto-alla-parmigiana",
+  "name": "Risotto alla parmigiana",
+  "porzioni": 12,
+  "collezione": "Risotti e polenta",
+  "date": "2026-11-13",
+  "ingredienti": "1000g riso\n200g burro\n100g cipolla\n120g parmigiano\n200ml vino\n3l acqua\nsale q.b.",
+  "preparazione": "1) Sciogliere metà del burro e appassire la cipolla tritata senza farla colorire.\n2) Tostare il riso un paio di minuti, sfumare con il vino e lasciarlo evaporare.\n3) Cuocere aggiungendo poco alla volta l'acqua bollente salata, mescolando, per circa 16-18 minuti.\n4) Spegnere, mantecare con il burro rimasto e il parmigiano. Coprire un minuto e servire.",
+  "note": "Costo di produzione per 12 porzioni: circa 12€ (riso 3,50; burro 2; parmigiano 2; vino 0,30; cipolla 0,20; energia 4), cioè circa 1€ a porzione.\n\"1 bicchiere grande\" di vino reso come 200ml per lo scaling; tipo di vino non indicato. Il procedimento non è negli appunti: è quello classico.\nFonte: appunti di Luca.",
+  "tags": [
+   "risotto",
+   "riso",
+   "primo",
+   "parmigiano",
+   "burro"
+  ]
  }
 ]
