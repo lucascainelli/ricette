@@ -73,10 +73,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .colbtn-fav .colbtn-icon{display:flex;color:#D97706}.colbtn-fav .colbtn-icon .isvg{width:30px;height:30px;fill:currentColor}
 .colbtn-fav .colbtn-name{color:#92400E}
 .favon{color:#D97706!important}.favon .isvg{fill:currentColor}
-.grp-title{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin:4px 0 8px}
-.grpchip{background:var(--surface);border:1.5px solid var(--border);border-radius:100px;padding:4px 11px;font-size:12px;font-weight:700;color:var(--text);cursor:pointer;transition:.12s}
-.grpchip em{font-style:normal;font-weight:700;color:var(--text3);margin-left:5px;font-size:10px}
-.grpchip:hover{background:var(--accent);border-color:var(--accent);color:#fff}.grpchip:hover em{color:#fff}
+.grp-sec{margin-top:26px}
+.grp-title{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--text2);margin:0 2px 11px}
+.grp-title .isvg{color:var(--accent)}
+.grp-title::after{content:"";flex:1;height:1px;background:var(--border)}
+.grp-sec .tagcloud{margin-bottom:0;gap:7px}
+.grpchip{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1.5px solid var(--border);border-radius:100px;padding:6px 8px 6px 14px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;transition:.15s;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.grpchip em{font-style:normal;font-weight:800;font-size:11px;min-width:20px;text-align:center;padding:1px 6px;border-radius:100px;background:#FEF3C7;color:#92400E}
+.grpchip:hover{border-color:var(--accent);box-shadow:0 4px 12px rgba(217,119,6,.15);transform:translateY(-1px)}
+.grp-sec .tagchip{padding:4px 11px}
 .colbtn-all{background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-color:#FDE68A}
 .colbtn-all .colbtn-name{color:#92400E}
 .colbtn-all .colbtn-count{background:rgba(0,0,0,.08);color:#92400E}
@@ -616,6 +621,8 @@ var ICONS={
   folder:'<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2Z"/>',
   users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
   star:'<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  pin:'<path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/>',
+  book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/>',
   tag:'<path d="M12.59 2H4a2 2 0 0 0-2 2v8.59a2 2 0 0 0 .59 1.41l9 9a2 2 0 0 0 2.82 0l8-8a2 2 0 0 0 0-2.82l-9-9A2 2 0 0 0 12.59 2Z"/><circle cx="7.3" cy="7.3" r="1.3"/>',
   upload:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>',
   save:'<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>',
@@ -770,21 +777,21 @@ function renderMain(){
       h+='</div>';
     });
     h+='</div>';
-    [['fonte','Autori e fonti'],['territorio','Territori']].forEach(function(g){
+    [['fonte','Autori e fonti','book'],['territorio','Territori','pin']].forEach(function(g){
       var items=groupCounts(g[0]);
       if(!items.length) return;
-      h+='<div class="grp-title">'+g[1]+'</div><div class="tagcloud">';
+      h+='<div class="grp-sec"><div class="grp-title">'+ic(g[2],'sm')+g[1]+'</div><div class="tagcloud">';
       items.forEach(function(e){h+='<span class="grpchip" data-k="'+g[0]+'" data-v="'+esc(e[0])+'" onclick="setGrp(this.dataset.k,this.dataset.v)">'+esc(e[0])+'<em>'+e[1]+'</em></span>';});
-      h+='</div>';
+      h+='</div></div>';
     });
     // Tag cloud below if tags exist
     var tags=allTags();
     if(tags.length){
-      h+='<div class="tagcloud">';
+      h+='<div class="grp-sec"><div class="grp-title">'+ic('tag','sm')+'Tag</div><div class="tagcloud">';
       tags.forEach(function(t){
         h+='<span class="tagchip" data-tag="'+esc(t)+'" onclick="setTag(this.dataset.tag)">'+esc(t)+'</span>';
       });
-      h+='</div>';
+      h+='</div></div>';
     }
     show('mainView',h);hide('searchView');
     return;
