@@ -575,6 +575,7 @@ function importInbox(){
         inboxDone.push(it.id);
         hits.forEach(function(r){
           if(it.appendNote&&(r.note||'').indexOf(it.appendNote)<0){r.note=((r.note||'').trim()+'\n'+it.appendNote).trim();}
+          if(it.collezione){var pc=collections.find(function(c){return (c.name||'').toLowerCase()===String(it.collezione).toLowerCase();});if(pc) r.colId=pc.id;}
         });
         added++;
         return;

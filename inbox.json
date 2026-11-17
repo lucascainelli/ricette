@@ -99,7 +99,7 @@
   "id": "inbox-20261117-pasta-con-le-sarde-palermitana",
   "name": "Pasta con le sarde alla palermitana",
   "porzioni": 5,
-  "collezione": "Pasta",
+  "collezione": "Pesci",
   "date": "2026-11-17",
   "ingredienti": "400g sarde pulite\n400g finocchietto selvatico pulito\n400g bucatini\n1 cipolla bianca\n1 cucchiaio uva passa\n1 cucchiaio pinoli\n5 filetti di acciuga\n2 cucchiai estratto di pomodoro\nolio extravergine d'oliva q.b.\nsale q.b.\npangrattato tostato q.b. (facoltativo)",
   "preparazione": "1) Diliscate le sarde, togliete testa e pinna dorsale, sciacquatele e mettetele da parte.\n2) Lessate il finocchietto in abbondante acqua salata per circa 15 minuti. Scolatelo, lasciatelo intiepidire e tenete l'acqua di cottura.\n3) In una padella capiente fate appassire la cipolla tritata in abbondante olio, a fuoco basso.\n4) Aggiungete le acciughe e scioglietele, poi l'uva passa ammollata e i pinoli.\n5) Sciogliete l'estratto di pomodoro nel soffritto, diluendolo a cucchiaiate con l'acqua del finocchietto.\n6) Unite il finocchietto tritato grossolanamente e mescolate.\n7) Coprite a filo con l'acqua di cottura del finocchietto, mettete il coperchio e cuocete circa 20 minuti.\n8) Incorporate le sarde con delicatezza, cuocete 2 minuti, spegnete e aggiustate di sale.\n9) Dividete il condimento in due parti.\n10) Cuocete i bucatini, spezzati in tre, nell'acqua del finocchietto.\n11) A 2-3 minuti dalla fine scolateli, trasferiteli in padella con metà condimento e mantecate con un po' d'acqua di cottura.\n12) Servite con un cucchiaio di condimento sopra e, a piacere, pangrattato tostato.",
@@ -114,5 +114,14 @@
    "san giuseppe",
    "primo"
   ]
+ },
+ {
+  "id": "inbox-20261117-sarde-palermitana-in-pesci",
+  "patch": [
+   "pasta",
+   "sarde",
+   "palermitana"
+  ],
+  "collezione": "Pesci"
  }
 ]
