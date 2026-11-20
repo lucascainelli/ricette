@@ -587,7 +587,7 @@ function importInbox(){
       ricette.unshift({
         id:it.id,name:it.name,porzioni:it.porzioni||4,colId:col?col.id:null,
         ingredienti:it.ingredienti||'',preparazione:it.preparazione||'',note:it.note||'',
-        tags:normTags(it.tags),
+        tags:normTags(it.tags),fonte:it.fonte||undefined,territorio:it.territorio||undefined,
         fotoUrl:null,fotoB64:null,date:it.date||today()
       });
       added++;

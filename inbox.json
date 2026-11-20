@@ -123,5 +123,25 @@
    "palermitana"
   ],
   "collezione": "Pesci"
+ },
+ {
+  "id": "inbox-20261120-fettunta-toscana",
+  "name": "Fettunta toscana",
+  "porzioni": 4,
+  "collezione": "Antipasti",
+  "date": "2026-11-20",
+  "ingredienti": "500g pane toscano sciocco a fette\n4 spicchi d'aglio\nq.b. olio extravergine di oliva nuovo\nq.b. sale marino",
+  "preparazione": "1) Taglia il pane a fette spesse 1,5-2cm.\n2) Tosta le fette su entrambi i lati sotto il grill del forno, su una griglia di ghisa o sulla brace, finché sono ben dorate.\n3) A pane ancora caldo, sfrega su ogni fetta uno spicchio d'aglio pelato.\n4) Condisci subito con un generoso filo d'olio nuovo e un pizzico di sale.\n5) Servi caldo.",
+  "note": "Da \"fetta unta\", cioè bagnata d'olio. Nasce nelle campagne toscane, dove il pane serviva ad assaggiare l'olio appena franto (novembre-dicembre).\nPane toscano sciocco (senza sale, DOP) e olio nuovo toscano (Frantoio, Moraiolo, Leccino).\nTempo totale: circa 10 minuti.\nQuantità dell'aglio non indicata nella fonte: 4 spicchi è una stima.\nFonte: MaMaBlip (mamablip.com).",
+  "fonte": "MaMaBlip",
+  "territorio": "Toscana",
+  "tags": [
+   "antipasto",
+   "pane",
+   "olio nuovo",
+   "aglio",
+   "veloce",
+   "vegano"
+  ]
  }
 ]
