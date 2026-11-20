@@ -143,5 +143,24 @@
    "veloce",
    "vegano"
   ]
+ },
+ {
+  "id": "inbox-20261120-spaghetti-aglio-nero",
+  "name": "Spaghetti all'aglio nero, olio e peperoncino",
+  "porzioni": 4,
+  "collezione": "Pasta",
+  "date": "2026-11-20",
+  "ingredienti": "320g spaghetti\n8 spicchi aglio nero (circa 40g)\n100ml acqua calda\n60ml olio extravergine di oliva\n1 peperoncino fresco\n10g prezzemolo fresco\n3l acqua per la pasta\n20g sale grosso",
+  "preparazione": "1) Frulla l'aglio nero con 100ml di acqua calda e metà dell'olio fino a ottenere una crema liscia.\n2) Lessa gli spaghetti in acqua salata, scolali molto al dente e tieni da parte un mestolo di acqua di cottura.\n3) In una padella scalda il resto dell'olio con il peperoncino tritato, a fuoco basso, senza farlo friggere.\n4) Aggiungi la crema di aglio nero e due cucchiai di acqua di cottura.\n5) Versa gli spaghetti e finisci la cottura in padella a fuoco vivace, mescolando e aggiungendo acqua di cottura se serve, finché la crema li lega.\n6) Fuori dal fuoco aggiungi il prezzemolo tritato, mescola e servi subito.",
+  "note": "L'aglio nero è aglio fresco fatto maturare a lungo in condizioni controllate, nato nella cucina asiatica. Ha un gusto dolce e morbido, con note di liquirizia e aceto balsamico. Rende lo spaghetto aglio, olio e peperoncino, piatto di mezzanotte napoletano e romano, più rotondo e meno pungente.\nQuantità di aglio nero e peperoncino indicative: regolare al gusto.\nFonte: ricetta di Luca Scainelli.",
+  "fonte": "Luca Scainelli",
+  "tags": [
+   "pasta",
+   "spaghetti",
+   "aglio nero",
+   "peperoncino",
+   "veloce",
+   "vegetariano"
+  ]
  }
 ]
