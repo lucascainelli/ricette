@@ -147,13 +147,13 @@
  {
   "id": "inbox-20261120-spaghetti-aglio-nero",
   "name": "Spaghetti all'aglio nero, olio e peperoncino",
-  "porzioni": 2,
+  "porzioni": 4,
   "collezione": "Pasta",
   "date": "2026-11-20",
-  "ingredienti": "170g spaghetti alla chitarra (vanno bene anche gli spaghetti normali)\n3 spicchi aglio nero\nolio extravergine di oliva q.b.\npeperoncino fresco o secco q.b.\nsale q.b.",
-  "preparazione": "1) In una padella con un po' d'olio, rosolare a fuoco dolce l'aglio nero sbucciato e il peperoncino.\n2) Intanto portare a ebollizione una pentola d'acqua.\n3) Dopo qualche minuto trasferire l'aglio nero in un bicchiere da frullatore a immersione, aggiungere un mestolo di acqua calda di cottura della pasta e frullare fino a una crema abbastanza omogenea.\n4) Salare l'acqua, versare la pasta e cuocerla circa 4 minuti.\n5) Trasferirla nella padella con l'olio e farla risottare con due mestoli di acqua di cottura, per altri 4 minuti o fino a cottura al dente.\n6) Un paio di minuti prima della fine unire la crema di aglio nero e mescolare bene.\n7) A pasta cotta spegnere il fuoco, lasciar riposare un minuto e servire subito, ben calda.",
-  "note": "Tempi: 10 minuti di preparazione, 15 di cottura.\nPer due persone bastano 2-3 spicchi di aglio nero. Meglio un buon olio extravergine.\nFonte: DANICUCINA, blog Giallozafferano (blog.giallozafferano.it/danicucina), 20 aprile 2021.",
-  "fonte": "DANICUCINA (Giallozafferano)",
+  "ingredienti": "320g spaghetti\n8 spicchi aglio nero (circa 40g)\n100ml acqua calda\n60ml olio extravergine di oliva\n1 peperoncino fresco\n10g prezzemolo fresco\n3l acqua per la pasta\n20g sale grosso",
+  "preparazione": "1) Frulla l'aglio nero con 100ml di acqua calda e metà dell'olio fino a ottenere una crema liscia.\n2) Lessa gli spaghetti in acqua salata, scolali molto al dente e tieni da parte un mestolo di acqua di cottura.\n3) In una padella scalda il resto dell'olio con il peperoncino tritato, a fuoco basso, senza farlo friggere.\n4) Aggiungi la crema di aglio nero e due cucchiai di acqua di cottura.\n5) Versa gli spaghetti e finisci la cottura in padella a fuoco vivace, mescolando e aggiungendo acqua di cottura se serve, finché la crema li lega.\n6) Fuori dal fuoco aggiungi il prezzemolo tritato, mescola e servi subito.",
+  "note": "L'aglio nero è aglio fresco fatto maturare a lungo in condizioni controllate, nato nella cucina asiatica. Ha un gusto dolce e morbido, con note di liquirizia e aceto balsamico. Rende lo spaghetto aglio, olio e peperoncino, piatto di mezzanotte napoletano e romano, più rotondo e meno pungente.\nQuantità di aglio nero e peperoncino indicative: regolare al gusto.\nFonte: ricetta di Luca Scainelli.",
+  "fonte": "Luca Scainelli",
   "tags": [
    "pasta",
    "spaghetti",
