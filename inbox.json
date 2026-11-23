@@ -162,5 +162,24 @@
    "veloce",
    "vegetariano"
   ]
+ },
+ {
+  "id": "inbox-20261123-patate-al-forno-croccanti",
+  "name": "Patate al forno croccanti",
+  "porzioni": 4,
+  "collezione": "Contorni",
+  "date": "2026-11-23",
+  "ingredienti": "1000g patate a pasta gialla\n20ml olio extravergine di oliva\n1 spicchio aglio\n2 rametti timo fresco\n1 rametto rosmarino fresco\nsale fino q.b.\n1/2 cucchiaino bicarbonato di sodio\n2000ml acqua",
+  "preparazione": "1) Sbuccia le patate e tagliale a pezzi grossi, di 3-4cm di lato.\n2) Sciogli il bicarbonato nell'acqua, porta a ebollizione, versa le patate e cuocile per 5 minuti.\n3) Scolale e disponile su una teglia con carta da forno, senza sovrapporle.\n4) In una padella dal fondo spesso scalda l'olio con aglio tritato grossolanamente e le erbe lavate e spezzettate a mano. Lascia riposare.\n5) Condisci le patate con l'olio aromatizzato, le erbe e il sale, senza mescolare: sono fragili.\n6) Inforna a 230°C (ventilato) per 20 minuti. Girale delicatamente e cuoci altri 10 minuti.",
+  "note": "Pasta gialla, meglio se novelle: la pasta rossa viene troppo dura.\nPezzi piccoli si sfaldano in bollitura; con patate piccole aggiungi un po' di aceto all'acqua.\nL'acqua alcalina ammorbidisce la superficie, che in forno diventa irregolare e croccante.\nMeglio mangiarle subito. Avanzi: fuori frigo fino al pasto dopo, poi 150°C per 10 minuti.\nVarianti: salvia, alloro, cipollotto o maggiorana; strutto, burro o grasso d'oca/anatra al posto dell'olio.\nSale senza quantità nella fonte.\nFonte: Dissapore, Rossella Neri (21/09/2024).",
+  "fonte": "Dissapore",
+  "tags": [
+   "patate",
+   "forno",
+   "contorno",
+   "vegetariano",
+   "croccante",
+   "bicarbonato"
+  ]
  }
 ]
