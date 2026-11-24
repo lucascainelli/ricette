@@ -181,5 +181,24 @@
    "croccante",
    "bicarbonato"
   ]
+ },
+ {
+  "id": "inbox-20261124-gnocchi-alla-romana",
+  "name": "Gnocchi alla romana",
+  "porzioni": 5,
+  "collezione": "Pasta",
+  "date": "2026-11-24",
+  "ingredienti": "1000ml latte intero\n250g semolino di grano duro\n2 uova\n90g parmigiano grattugiato\n120g burro\nnoce moscata q.b.\nsale q.b.",
+  "preparazione": "1) Scalda il latte con sale e una spolverata di noce moscata. Poco prima del bollore versa il semolino a pioggia e mescola per qualche minuto, finché il composto è sodo.\n2) Togli dal fuoco e incorpora 60g di burro. Lascia raffreddare.\n3) Unisci le uova e metà del parmigiano.\n4) Stendi l'impasto su carta da forno, spesso circa mezzo dito. Ricava dei dischetti con una formina rotonda.\n5) Disponi i dischetti su una teglia imburrata.\n6) Distribuisci sopra gli altri 60g di burro a fiocchetti e il parmigiano rimasto.\n7) Inforna a temperatura massima per 15-20 minuti, finché sono dorati.",
+  "note": "Cottura in forno: 15-20 minuti. La fonte non indica i tempi totali.\nFormaggio nella fonte: 3 manciate (stimate 90g); la divisione tra impasto e superficie è una scelta nostra.\nVariante: servirli con fonduta o salsa di latte e taleggio, più veloce e leggera.\nFonte: midailaricetta.it, ricetta tradizionale.",
+  "fonte": "midailaricetta.it",
+  "territorio": "Lazio",
+  "tags": [
+   "semolino",
+   "gnocchi",
+   "forno",
+   "gratinati",
+   "lazio"
+  ]
  }
 ]
